@@ -56,6 +56,7 @@
     input[type=range] { width:100%; accent-color:var(--accent); }
     .network text { fill:var(--text); font-size:12px; }
     .network .sub { fill:var(--muted); font-size:10px; }
+    .hub-caption { color:var(--muted); font-size:13px; margin-top:10px; text-align:center; }
     .node { fill:#18212a; stroke:#58748a; stroke-width:1.5; }
     .hub { fill:#20352f; stroke:#7ed7a7; stroke-width:2; }
     .regional { fill:#352a20; stroke:#f1bf78; stroke-width:2.5; }
@@ -190,21 +191,19 @@
     <section class="card wide">
       <h2>Граф цивилизации</h2>
       <svg class="network" viewBox="0 0 1120 430" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Схема распределённой сети поселений">
-        <line class="edge-strong" x1="287" y1="121" x2="489" y2="191"/>
-        <line class="edge-strong" x1="833" y1="121" x2="631" y2="191"/>
-        <line class="edge-strong" x1="287" y1="313" x2="489" y2="241"/>
-        <line class="edge-strong" x1="833" y1="313" x2="631" y2="241"/>
+        <line class="edge-strong" x1="288" y1="121" x2="503" y2="195"/>
+        <line class="edge-strong" x1="832" y1="121" x2="617" y2="195"/>
+        <line class="edge-strong" x1="288" y1="313" x2="504" y2="235"/>
+        <line class="edge-strong" x1="832" y1="313" x2="616" y2="235"/>
 
         <g id="clusterA"></g><g id="clusterB"></g><g id="clusterC"></g><g id="clusterD"></g>
 
-        <circle class="regional" cx="560" cy="215" r="78"/>
-        <text x="560" y="196" text-anchor="middle" font-weight="700" font-size="12">Региональный хаб</text>
-        <text x="560" y="211" text-anchor="middle" font-size="10" fill="#9aa7b2">
-          <tspan x="560" dy="0">промышленность · университет</tspan>
-          <tspan x="560" dy="13">аэропорт</tspan>
-          <tspan x="560" dy="13">большие события</tspan>
-        </text>
+        <circle class="regional" cx="560" cy="215" r="60"/>
+        <text x="560" y="207" text-anchor="middle" font-weight="700" font-size="14" fill="#eef3f7">Региональный</text>
+        <text x="560" y="224" text-anchor="middle" font-weight="700" font-size="14" fill="#eef3f7">хаб</text>
+        <title>Региональный хаб — промышленность, университет, аэропорт, большие события</title>
       </svg>
+      <div class="hub-caption">Региональный хаб: промышленность · университет · аэропорт · большие события</div>
       <p class="notes">В реальности граф должен иметь резервные связи: каждый кластер подключён минимум к двум хабам, а каждый посёлок может получать критические поставки несколькими маршрутами.</p>
     </section>
   </div>
