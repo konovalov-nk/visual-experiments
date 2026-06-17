@@ -68,8 +68,13 @@
       .wide { grid-column:auto; }
       .kpis { grid-template-columns:repeat(2,1fr); }
     }
+    .planet-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:20px; }
+    .budget-bar { margin:16px 0; }
+    .budget-bar.rest { opacity:.7; }
+    .fill.rest { background:var(--panel2); }
     @media (max-width:430px) {
       .donut-wrap { grid-template-columns:1fr; justify-items:center; }
+      .planet-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -97,6 +102,31 @@
         <div class="track"><div id="futureBar" class="fill future" style="width:22.2%">распределённая сеть</div></div>
       </div>
       <p class="notes">Это не прогноз и не «экологический след», а грубая модель физической площади под жильё, еду, энергию, воду, отходы, промышленность и логистику.</p>
+    </section>
+
+    <section class="card">
+      <h2>Масштаб планеты</h2>
+      <div class="planet-grid">
+        <div class="kpi"><b>510 млн км²</b><span>вся поверхность Земли</span></div>
+        <div class="kpi"><b>149 млн км²</b><span>вся суша</span></div>
+        <div class="kpi"><b>104 млн км²</b><span>обитаемая суша</span></div>
+      </div>
+      <p class="notes" style="margin-top:8px;">Обитаемая суша — land excluding glaciers and barren land. It does not mean that every square kilometre is equally suitable for settlement.</p>
+      <div class="budget-section">
+        <h3 style="font-size:16px;margin:22px 0 14px;">Земельный бюджет · 104 млн км²</h3>
+        <div class="budget-bar">
+          <div class="bar-head"><span>Текущая система</span><strong>52,6 млн км² · 50,6%</strong></div>
+          <div class="track"><div class="fill current" style="width:50.6%"></div></div>
+        </div>
+        <div class="budget-bar">
+          <div class="bar-head"><span>Сценарий 2077</span><strong id="budgetVal">11,7 млн км² · 11,3%</strong></div>
+          <div class="track"><div id="budgetFill" class="fill future" style="width:11.3%"></div></div>
+        </div>
+        <div class="budget-bar rest">
+          <div class="bar-head"><span>Остальная обитаемая суша</span><strong id="budgetRemain">92,3 млн км² · 88,7%</strong></div>
+          <div class="track"><div id="budgetRemainFill" class="fill rest" style="width:88.7%"></div></div>
+        </div>
+      </div>
     </section>
 
     <section class="card">
@@ -182,6 +212,7 @@
 
 <script>
 const currentTotal = 52.6;
+const habitable = 104;
 const colors = ["#80d8ff","#b8f28b","#ffd180","#d7a7ff","#ff9e80"];
 const ids = ["population","settlement","food","energy","industry","utilities"];
 
@@ -213,6 +244,13 @@ function update() {
   ratioKpi.textContent = (reduction >= 0 ? "−" : "+") + fmt(Math.abs(reduction),0)+"%";
   futureBar.style.width = Math.min(100,total/currentTotal*100)+"%";
   donutTotal.textContent = fmt(total);
+
+  const futurePct = total / habitable * 100;
+  budgetVal.textContent = `${fmt(total)} млн км² · ${fmt(futurePct,1)}%`;
+  budgetFill.style.width = Math.min(100, futurePct) + '%';
+  const remainFuture = habitable - total;
+  budgetRemain.textContent = `${fmt(remainFuture)} млн км² · ${fmt(100-futurePct,1)}%`;
+  budgetRemainFill.style.width = Math.min(100, 100 - futurePct) + '%';
 
   const r=78, circumference=2*Math.PI*r;
   let offset=0;
