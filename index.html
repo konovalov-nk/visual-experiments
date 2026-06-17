@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Visual Experiments</title>
+  <style>
+    :root { color-scheme:dark; --bg:#0b0d10; --card:#14181f; --text:#eef3f7; --muted:#8895a0; --accent:#80d8ff; --border:#202830; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 Inter,system-ui,sans-serif; }
+    main { max-width:780px; margin:auto; padding:48px 20px; }
+    h1 { font-size:26px; font-weight:600; margin:0 0 6px; }
+    .sub { color:var(--muted); margin:0 0 32px; }
+    .grid { display:grid; gap:14px; }
+    .card {
+      background:var(--card); border:1px solid var(--border); border-radius:16px;
+      padding:18px 22px; text-decoration:none; color:inherit;
+      display:flex; align-items:center; gap:16px;
+      transition:border-color .15s, transform .15s;
+    }
+    .card:hover { border-color:var(--accent); transform:translateY(-2px); }
+    .card .icon { font-size:28px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:12px; flex-shrink:0; }
+    .card .content { flex:1; }
+    .card h2 { font-size:16px; font-weight:600; margin:0 0 2px; }
+    .card p { color:var(--muted); margin:0; font-size:13px; }
+    .card .tag { color:var(--accent); font-size:12px; opacity:.5; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Visual Experiments</h1>
+  <p class="sub">Интерактивные одностраничники и визуализации</p>
+  <div class="grid">
+    <a class="card" href="2077/">
+      <div class="icon" style="background:#1a2530">🌍</div>
+      <div class="content">
+        <h2>Сценарий 2077</h2>
+        <p>Модель распределённой клеточной цивилизации с интерактивными слайдерами</p>
+      </div>
+    </a>
+    <a class="card" href="intent-graph/" style="opacity:.45;pointer-events:none">
+      <div class="icon" style="background:#1f1a2e">🌀</div>
+      <div class="content">
+        <h2>Intent Graph</h2>
+        <p>Визуализация графа намерений и связей</p>
+        <span class="tag">soon</span>
+      </div>
+    </a>
+    <a class="card" href="minimal-context/" style="opacity:.45;pointer-events:none">
+      <div class="icon" style="background:#1e2518">📄</div>
+      <div class="content">
+        <h2>Minimal Context</h2>
+        <p>Эксперимент с минимальным контекстом и вниманием</p>
+        <span class="tag">soon</span>
+      </div>
+    </a>
+  </div>
+</main>
+</body>
+</html>

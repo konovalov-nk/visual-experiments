@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Сценарий 2077 — распределённая цивилизация</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#0b0d10;
+      --panel:#12161c;
+      --panel2:#171c23;
+      --text:#eef3f7;
+      --muted:#9aa7b2;
+      --line:#29313b;
+      --accent:#80d8ff;
+      --accent2:#b8f28b;
+      --accent3:#ffd180;
+      --accent4:#d7a7ff;
+      --danger:#ff8a80;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; background:linear-gradient(180deg,#090b0e,#0f1318);
+      color:var(--text); font:15px/1.5 Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+    main { max-width:1180px; margin:auto; padding:32px 20px 64px; }
+    h1 { font-size:clamp(28px,4vw,48px); line-height:1.05; margin:0 0 10px; }
+    h2 { font-size:20px; margin:0 0 16px; }
+    p { margin:0; }
+    .lead { color:var(--muted); max-width:850px; font-size:17px; }
+    .grid { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; margin-top:24px; }
+    .card {
+      background:rgba(18,22,28,.94); border:1px solid var(--line);
+      border-radius:18px; padding:20px; box-shadow:0 18px 60px rgba(0,0,0,.25);
+    }
+    .wide { grid-column:1/-1; }
+    .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:20px; }
+    .kpi { background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px; }
+    .kpi b { display:block; font-size:23px; letter-spacing:-.03em; }
+    .kpi span { color:var(--muted); font-size:12px; }
+    .bar-row { margin:18px 0; }
+    .bar-head { display:flex; justify-content:space-between; gap:12px; margin-bottom:7px; }
+    .track { height:34px; background:#0d1116; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+    .fill { height:100%; display:flex; align-items:center; padding:0 12px; font-weight:700; white-space:nowrap; transition:width .35s ease; }
+    .current { background:linear-gradient(90deg,#a84343,#e07c61); }
+    .future { background:linear-gradient(90deg,#2e7d72,#72d49b); }
+    .legend { display:grid; gap:8px; margin-top:14px; }
+    .legend div { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--muted); }
+    .swatch { width:11px; height:11px; border-radius:3px; display:inline-block; margin-right:8px; }
+    .donut-wrap { display:grid; grid-template-columns:220px 1fr; gap:20px; align-items:center; }
+    svg { width:100%; height:auto; }
+    .controls { display:grid; gap:13px; }
+    .control label { display:flex; justify-content:space-between; color:var(--muted); margin-bottom:4px; }
+    input[type=range] { width:100%; accent-color:var(--accent); }
+    .network text { fill:var(--text); font-size:12px; }
+    .network .sub { fill:var(--muted); font-size:10px; }
+    .node { fill:#18212a; stroke:#58748a; stroke-width:1.5; }
+    .hub { fill:#20352f; stroke:#7ed7a7; stroke-width:2; }
+    .regional { fill:#352a20; stroke:#f1bf78; stroke-width:2.5; }
+    .edge { stroke:#42505d; stroke-width:1.2; }
+    .edge-strong { stroke:#8293a3; stroke-width:2.4; }
+    .notes { color:var(--muted); font-size:13px; margin-top:14px; }
+    code { color:#d6f3ff; }
+    @media (max-width:850px) {
+      .grid { grid-template-columns:1fr; }
+      .wide { grid-column:auto; }
+      .kpis { grid-template-columns:repeat(2,1fr); }
+      .donut-wrap { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Сценарий 2077: клеточная цивилизация</h1>
+  <p class="lead">Не миллиарды людей, собранные в мегаполисах, а сеть небольших поселений по 200–1000 человек, связанных с кластерами и редкими промышленно‑технологическими хабами.</p>
+
+  <section class="kpis">
+    <div class="kpi"><b id="populationKpi">8,3 млрд</b><span>население в модели</span></div>
+    <div class="kpi"><b id="currentKpi">52,6 млн км²</b><span>условный текущий footprint</span></div>
+    <div class="kpi"><b id="futureKpi">11,7 млн км²</b><span>сценарий 2077</span></div>
+    <div class="kpi"><b id="ratioKpi">−78%</b><span>сокращение площади</span></div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Сейчас vs 2077</h2>
+      <div class="bar-row">
+        <div class="bar-head"><span>Текущая система</span><strong>52,6 млн км²</strong></div>
+        <div class="track"><div class="fill current" style="width:100%">земледелие + пастбища + застройка + энергия</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-head"><span>Сценарий 2077</span><strong id="futureBarValue">11,7 млн км²</strong></div>
+        <div class="track"><div id="futureBar" class="fill future" style="width:22.2%">распределённая сеть</div></div>
+      </div>
+      <p class="notes">Это не прогноз и не «экологический след», а грубая модель физической площади под жильё, еду, энергию, воду, отходы, промышленность и логистику.</p>
+    </section>
+
+    <section class="card">
+      <h2>Из чего состоит 2077</h2>
+      <div class="donut-wrap">
+        <svg viewBox="0 0 220 220" aria-label="Круговая диаграмма сценария 2077">
+          <circle cx="110" cy="110" r="78" fill="none" stroke="#232b34" stroke-width="34"/>
+          <g id="donutSegments" transform="rotate(-90 110 110)"></g>
+          <text x="110" y="105" text-anchor="middle" fill="#eef3f7" font-size="25" font-weight="700" id="donutTotal">11,7</text>
+          <text x="110" y="128" text-anchor="middle" fill="#9aa7b2" font-size="12">млн км²</text>
+        </svg>
+        <div class="legend" id="legend"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Параметры сценария</h2>
+      <div class="controls">
+        <div class="control">
+          <label><span>Население</span><strong id="populationOut">8,3 млрд</strong></label>
+          <input id="population" type="range" min="4" max="12" step="0.1" value="8.3">
+        </div>
+        <div class="control">
+          <label><span>Поселения и локальная инфраструктура</span><strong id="settlementOut">300 м²/чел</strong></label>
+          <input id="settlement" type="range" min="100" max="1000" step="25" value="300">
+        </div>
+        <div class="control">
+          <label><span>Еда: поля, теплицы, ферментация</span><strong id="foodOut">900 м²/чел</strong></label>
+          <input id="food" type="range" min="250" max="3000" step="50" value="900">
+        </div>
+        <div class="control">
+          <label><span>Энергия</span><strong id="energyOut">50 м²/чел</strong></label>
+          <input id="energy" type="range" min="10" max="150" step="5" value="50">
+        </div>
+        <div class="control">
+          <label><span>Промышленность и логистика</span><strong id="industryOut">120 м²/чел</strong></label>
+          <input id="industry" type="range" min="40" max="500" step="10" value="120">
+        </div>
+        <div class="control">
+          <label><span>Вода, отходы, резервы</span><strong id="utilitiesOut">40 м²/чел</strong></label>
+          <input id="utilities" type="range" min="10" max="200" step="5" value="40">
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Главная архитектурная мысль</h2>
+      <p>Посёлок не обязан производить всё. Он обязан <strong>пережить локальный отказ</strong>, а всё сложное получает из нескольких независимых хабов.</p>
+      <div style="margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#0e1318">
+        <strong>Посёлок</strong><br>
+        <span style="color:var(--muted)">жильё, школа, базовая медицина, еда, энергия, вода, ремонт</span>
+        <hr style="border:0;border-top:1px solid var(--line);margin:13px 0">
+        <strong>Кластер</strong><br>
+        <span style="color:var(--muted)">больница, колледж, склады, переработка, пожарные, транспорт</span>
+        <hr style="border:0;border-top:1px solid var(--line);margin:13px 0">
+        <strong>Региональный хаб</strong><br>
+        <span style="color:var(--muted)">тяжёлая промышленность, университет, аэропорт, крупные события</span>
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Граф цивилизации</h2>
+      <svg class="network" viewBox="0 0 1120 430" role="img" aria-label="Схема распределённой сети поселений">
+        <line class="edge-strong" x1="560" y1="215" x2="255" y2="110"/>
+        <line class="edge-strong" x1="560" y1="215" x2="865" y2="110"/>
+        <line class="edge-strong" x1="560" y1="215" x2="255" y2="325"/>
+        <line class="edge-strong" x1="560" y1="215" x2="865" y2="325"/>
+
+        <g id="clusterA"></g><g id="clusterB"></g><g id="clusterC"></g><g id="clusterD"></g>
+
+        <circle class="regional" cx="560" cy="215" r="62"/>
+        <text x="560" y="207" text-anchor="middle" font-weight="700">Региональный хаб</text>
+        <text x="560" y="225" text-anchor="middle" class="sub">промышленность · университет</text>
+        <text x="560" y="240" text-anchor="middle" class="sub">аэропорт · большие события</text>
+      </svg>
+      <p class="notes">В реальности граф должен иметь резервные связи: каждый кластер подключён минимум к двум хабам, а каждый посёлок может получать критические поставки несколькими маршрутами.</p>
+    </section>
+  </div>
+</main>
+
+<script>
+const currentTotal = 52.6;
+const colors = ["#80d8ff","#b8f28b","#ffd180","#d7a7ff","#ff9e80"];
+const ids = ["population","settlement","food","energy","industry","utilities"];
+
+function fmt(x, digits=1) {
+  return x.toLocaleString("ru-RU",{maximumFractionDigits:digits,minimumFractionDigits:digits});
+}
+function update() {
+  const population = +document.getElementById("population").value;
+  const values = {
+    "Поселения": population * +settlement.value / 1000,
+    "Еда": population * +food.value / 1000,
+    "Энергия": population * +energy.value / 1000,
+    "Промышленность и логистика": population * +industry.value / 1000,
+    "Вода, отходы, резервы": population * +utilities.value / 1000
+  };
+  const total = Object.values(values).reduce((a,b)=>a+b,0);
+  const reduction = (1-total/currentTotal)*100;
+
+  populationOut.textContent = fmt(population)+" млрд";
+  populationKpi.textContent = fmt(population)+" млрд";
+  settlementOut.textContent = settlement.value+" м²/чел";
+  foodOut.textContent = food.value+" м²/чел";
+  energyOut.textContent = energy.value+" м²/чел";
+  industryOut.textContent = industry.value+" м²/чел";
+  utilitiesOut.textContent = utilities.value+" м²/чел";
+
+  futureKpi.textContent = fmt(total)+" млн км²";
+  futureBarValue.textContent = fmt(total)+" млн км²";
+  ratioKpi.textContent = (reduction >= 0 ? "−" : "+") + fmt(Math.abs(reduction),0)+"%";
+  futureBar.style.width = Math.min(100,total/currentTotal*100)+"%";
+  donutTotal.textContent = fmt(total);
+
+  const r=78, circumference=2*Math.PI*r;
+  let offset=0;
+  donutSegments.innerHTML="";
+  legend.innerHTML="";
+  Object.entries(values).forEach(([name,value],i)=>{
+    const frac=value/total;
+    const circle=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    circle.setAttribute("cx","110"); circle.setAttribute("cy","110"); circle.setAttribute("r",r);
+    circle.setAttribute("fill","none"); circle.setAttribute("stroke",colors[i]);
+    circle.setAttribute("stroke-width","34");
+    circle.setAttribute("stroke-dasharray",`${frac*circumference} ${circumference}`);
+    circle.setAttribute("stroke-dashoffset",`${-offset*circumference}`);
+    donutSegments.appendChild(circle);
+    offset += frac;
+
+    const row=document.createElement("div");
+    row.innerHTML=`<span><i class="swatch" style="background:${colors[i]}"></i>${name}</span><strong>${fmt(value)} млн км²</strong>`;
+    legend.appendChild(row);
+  });
+}
+ids.forEach(id=>document.getElementById(id).addEventListener("input",update));
+
+function cluster(groupId,cx,cy,label) {
+  const g=document.getElementById(groupId);
+  const points=[[-82,-34],[-95,35],[-18,-76],[52,-60],[89,6],[55,68],[-22,78]];
+  points.forEach(([dx,dy],i)=>{
+    const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("class","edge"); line.setAttribute("x1",cx); line.setAttribute("y1",cy);
+    line.setAttribute("x2",cx+dx); line.setAttribute("y2",cy+dy); g.appendChild(line);
+    const node=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    node.setAttribute("class","node"); node.setAttribute("cx",cx+dx); node.setAttribute("cy",cy+dy); node.setAttribute("r","16"); g.appendChild(node);
+  });
+  const hub=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  hub.setAttribute("class","hub"); hub.setAttribute("cx",cx); hub.setAttribute("cy",cy); hub.setAttribute("r","35"); g.appendChild(hub);
+  const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+  t.setAttribute("x",cx); t.setAttribute("y",cy+4); t.setAttribute("text-anchor","middle"); t.setAttribute("font-weight","700"); t.textContent=label; g.appendChild(t);
+}
+cluster("clusterA",255,110,"Кластер A");
+cluster("clusterB",865,110,"Кластер B");
+cluster("clusterC",255,325,"Кластер C");
+cluster("clusterD",865,325,"Кластер D");
+update();
+</script>
+</body>
+</html>
