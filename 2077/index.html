@@ -218,7 +218,7 @@ const habitable = 104;
 const colors = ["#80d8ff","#b8f28b","#ffd180","#d7a7ff","#ff9e80"];
 const ids = ["population","settlement","food","energy","industry","utilities"];
 
-let lang = 'ru';
+let lang = 'en';
 
 const t = {
   ru: {
@@ -545,7 +545,7 @@ cluster("clusterA",255,110,tr("clusterLabel")+" A");
 cluster("clusterB",865,110,tr("clusterLabel")+" B");
 cluster("clusterC",255,325,tr("clusterLabel")+" C");
 cluster("clusterD",865,325,tr("clusterLabel")+" D");
-update();
+switchLang(lang);
 
 function updateClusterLabels() {
   const cl = tr("clusterLabel");
