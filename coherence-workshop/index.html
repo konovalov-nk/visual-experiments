@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Coherence Workshop · generated level</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101618;--panel:#1c2426;--line:#374648;--text:#edf1e9;--muted:#a7b5ae;--green:#b9ee91;--blue:#a6d3e6;--red:#ffa89a;--gold:#f3d392}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 5% 0,#293d32,transparent 38%),var(--bg);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{color:var(--green)}.app{max-width:1440px;margin:auto;padding:26px 25px 42px}.heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:21px}.overline{font:700 11px ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--green)}h1{font-size:clamp(28px,3.7vw,48px);letter-spacing:-.045em;line-height:1.05;margin:9px 0 7px}h1 em{color:var(--green);font-style:normal}h2{font-size:16px;margin:0}.heading p{margin:0;color:var(--muted)}.loader{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;background:#25342b;border:1px solid #53735a;border-radius:9px;color:var(--green);font-size:12px;white-space:nowrap;cursor:pointer}.loader input{width:0;height:0;opacity:0;position:absolute}.status{border:1px solid #405349;border-radius:13px;background:#19231e;padding:10px 15px;display:flex;gap:13px;align-items:center;flex-wrap:wrap;margin-bottom:16px;color:var(--muted);font-size:13px}.status strong{color:var(--green)}.bar{width:130px;background:#3c4d42;border-radius:20px;height:7px;overflow:hidden}.bar span{display:block;height:100%;background:var(--green);width:0;transition:width .25s}.columns{display:grid;grid-template-columns:minmax(250px,.9fr) minmax(360px,1.15fr) minmax(285px,1fr);gap:15px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0;box-shadow:0 15px 30px #0002}.panel header{border-bottom:1px solid var(--line);padding:17px 18px;display:flex;align-items:center;justify-content:space-between;gap:8px}.panel header small{color:var(--muted);font:11px ui-monospace,monospace;white-space:nowrap}.body{padding:17px 18px 20px}.label{color:var(--green);font:700 11px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;margin:0 0 10px}.body p{margin:0 0 13px}.subtle{color:var(--muted);font-size:12px}.divider{border-top:1px solid var(--line);margin:18px 0}.fact,.snap{border:1px solid #415154;border-radius:10px;background:#121b1d;padding:11px 12px;margin-bottom:10px;overflow:auto}.fact strong,.snap strong{display:block;color:var(--blue);font:700 11px ui-monospace,monospace;margin-bottom:5px}.fact pre,.snap pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.55 ui-monospace,monospace}.cards{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}.card,.slot,.ghost,.run{border-radius:9px}.card{background:#2e3d34;border:1px solid #5b7960;color:var(--text);font:12px ui-monospace,monospace;padding:9px 10px;text-align:left;user-select:none}.card:hover,.slot:hover{border-color:var(--green)}.card.active{background:#446345;border-color:var(--green);box-shadow:0 0 0 1px var(--green)}.card.measure{background:#403a29;border-color:#8b774d}.model-line{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:17px 0}.node{border:1px solid #647d6a;border-radius:8px;padding:9px 10px;background:#283a2e;font:12px ui-monospace,monospace}.node.empty{background:#272c2d;border-color:#495252;color:#bec9c0}.arrow{color:var(--green);font-size:20px}.smallhead{font-size:12px;color:var(--muted);margin:16px 0 9px}.slot-row{display:flex;align-items:center;gap:9px;margin:8px 0}.slot-row span{min-width:91px;font:12px ui-monospace,monospace}.slot{flex:1;text-align:left;min-height:42px;background:#202e28;border:1px dashed #708879;padding:9px 10px;color:var(--green);font:12px ui-monospace,monospace}.slot.blank{color:#91a097}.slot.bad{background:#432f2e;border-color:var(--red);color:#ffd0c9}.slot.good{border-color:var(--green)}.slot.over{background:#3c5942}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}.run,.ghost{font-weight:700;font-size:13px;padding:10px 14px}.run{border:1px solid #d7f4b8;background:var(--green);color:#17271b}.run:hover{background:#d5f8b5}.run:disabled{opacity:.5;cursor:default}.ghost{border:1px solid #6f8472;background:#2c3f31;color:#e7f7df}.feedback{border-radius:10px;padding:12px;border:1px solid var(--line);background:#25302d;font-size:13px}.feedback.ok{border-color:#638d65;background:#293e2e}.feedback.no{border-color:#a16960;background:#47322f}.feedback strong{display:block;margin-bottom:4px}.feedback p{margin:0;color:#dce5da}.feedback ul{padding-left:18px;margin:8px 0 0}.next{margin-top:12px;background:#263328;border:1px solid #5b795b;border-radius:10px;padding:12px;color:#dce8d7;font-size:13px}.next b{color:var(--green)}.footer{color:var(--muted);font-size:12px;margin-top:16px}.footer a{color:var(--blue)}.pill{font:11px ui-monospace,monospace;color:var(--green);border-radius:5px;background:#344738;padding:4px 7px;white-space:nowrap}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar a{text-decoration:none}
+    @media(max-width:1090px){.columns{grid-template-columns:1fr 1fr}.columns .panel:last-child{grid-column:1/-1}}@media(max-width:700px){.app{padding:17px 11px}.heading{flex-wrap:wrap}.columns{display:block}.panel{margin-bottom:13px}.body{padding:15px}.status{gap:9px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="heading"><div><div class="overline">Coherence / workshop engine 0.1</div><h1>Build a <em>transition</em></h1><p id="subtitle">Loading the level…</p></div><div class="toolbar"><a class="loader" href="url-create.jsonl">View JSONL</a><label class="loader">Load another .workshop.json<input type="file" id="load-file" accept=".json,application/json"></label></div></div>
+    <div class="status"><strong id="progress-title"></strong><div class="bar"><span id="progress-fill"></span></div><span id="progress-caption"></span><span class="pill" id="scope-pill"></span></div>
+    <div class="columns">
+      <section class="panel"><header><h2>01 / World fragments</h2><small>observe</small></header><div class="body" id="sources"></div></section>
+      <section class="panel"><header><h2>02 / AC blueprint</h2><small>build</small></header><div class="body" id="model"></div></section>
+      <section class="panel"><header><h2>03 / World snapshots</h2><small>verify</small></header><div class="body" id="world"></div></section>
+    </div>
+    <p class="footer" id="provenance"></p>
+  </main>
+  <script type="application/json" id="workshop-data">{"format":"coherence-workshop/v1","spec":{"id":"spec.url.create","title":"URL creation","description":"Create a short link. This level observes only rows in public.urls matching the current short code."},"world":{"id":"world.urls","adapter":"postgres-snapshot","projection":{"id":"projection.current-short","table":"public.urls","path":"db.urls","columns":["id","short","original"],"where":{"field":"short","equals":"input.short"}}},"states":{"from":{"id":"state.none","title":"∅"},"to":{"id":"state.url","title":"URL","fields":{"id":"string","short":"string","original":"string"}}},"transition":{"id":"transition.create","action":"create","input":{"short":"string","original":"string"}},"measurement":{"id":"measurement.url-count","path":"db.urls","expected_delta":1},"ac":{"id":"ac.create","title":"Create a URL","given":"No URL exists for the selected short code","when":"create(short, original)","then":"One URL row appears with id, short and original","required_trials":2},"test_link":{"id":"test.create","path":"url_create.test.mjs","symbol":"create URL persists row and returns id","relation":"verifies","environment":"in-memory PostgreSQL-query adapter (demo)"},"code_link":{"id":"code.create","path":"url_create.mjs","symbol":"createUrl","relation":"implements"},"puzzle":{"cards":[{"id":"generated.id","label":"generated.id()","type":"string"},{"id":"input.short","label":"input.short","type":"string"},{"id":"input.original","label":"input.original","type":"string"},{"id":"context.email","label":"context.email","type":"string"},{"id":"literal.null","label":"null","type":"null"}],"slots":[{"field":"id","type":"string","answer":"generated.id"},{"field":"short","type":"string","answer":"input.short"},{"field":"original","type":"string","answer":"input.original"}],"delta_options":[0,1,2]},"examples":[{"kind":"case","id":"case.moss","ac_id":"ac.create","role":"example","input":{"short":"moss","original":"https://garden.test"},"context":{"email":"nik@example.test"},"snapshots":[{"seq":0,"label":"before create","world":{"db":{"urls":[]}}},{"seq":1,"label":"after create","world":{"db":{"urls":[{"id":"url_01","short":"moss","original":"https://garden.test"}]}}}]}],"trials":[{"kind":"case","id":"case.cedar","ac_id":"ac.create","role":"trial","input":{"short":"cedar","original":"https://forest.test"},"context":{"email":"nik@example.test"},"snapshots":[{"seq":0,"label":"before create","world":{"db":{"urls":[]}}},{"seq":1,"label":"after create","world":{"db":{"urls":[{"id":"url_11","short":"cedar","original":"https://forest.test"}]}}}]},{"kind":"case","id":"case.birch","ac_id":"ac.create","role":"trial","input":{"short":"birch","original":"https://trees.test/a"},"context":{"email":"nik@example.test"},"snapshots":[{"seq":0,"label":"before create","world":{"db":{"urls":[]}}},{"seq":1,"label":"after create","world":{"db":{"urls":[{"id":"url_12","short":"birch","original":"https://trees.test/a"}]}}}]}]}</script>
+  <script>
+  (() => {
+    const byId = id => document.getElementById(id);
+    const esc = input => String(input).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const path = (value, selector) => selector.split('.').reduce((current, key) => current?.[key], value);
+    let game = JSON.parse(byId('workshop-data').textContent);
+    let state = fresh();
+    function fresh(){return {selected:null,placed:{},passed:0,observation:null,feedback:null};}
+    function rows(snapshot){return path(snapshot.world,game.world.projection.path);}
+    function label(id){return game.puzzle.cards.find(card=>card.id===id)?.label ?? (id?.startsWith('delta:')?`Δ rows = ${id.slice(6)}`:'choose a card');}
+    function card(id,text,group){return `<button type="button" class="card ${group==='delta'?'measure':''} ${state.selected===id?'active':''}" draggable="true" data-card="${esc(id)}" data-group="${group}" aria-pressed="${state.selected===id}">${esc(text)}</button>`;}
+    function sourcePanel(){
+      const example=game.examples[0];
+      const before=example.snapshots[0],after=example.snapshots.at(-1);
+      return `<div class="label">${esc(game.ac.title)}</div><p>${esc(game.spec.description)}</p>
+        <div class="fact"><strong>EXAMPLE · INPUT</strong><pre>${esc(JSON.stringify({input:example.input,context:example.context},null,2))}</pre></div>
+        <div class="fact"><strong>EXAMPLE · ${esc(before.label)} → ${esc(after.label)}</strong><pre>${esc(JSON.stringify({before:rows(before),after:rows(after)},null,2))}</pre></div>
+        <div class="divider"></div><div class="label">Value sources</div><div class="cards">${game.puzzle.cards.map(item=>card(item.id,item.label,'source')).join('')}</div>
+        <div class="label">Measurement: count(${esc(game.measurement.path)})</div><div class="cards">${game.puzzle.delta_options.map(delta=>card(`delta:${delta}`,`Δ rows = ${delta}`,'delta')).join('')}</div>
+        <p class="subtle">Sources come from inputs, context and the transition. <code>null</code> is another hypothesis.</p>`;
+    }
+    function slot(name,visible,group){
+      const chosen=state.placed[name];const wrong=state.feedback?.wrong?.includes(name);
+      return `<div class="slot-row"><span>${esc(visible)}</span><button type="button" class="slot ${chosen?'':'blank'} ${wrong?'bad':state.feedback&&chosen?'good':''}" data-slot="${esc(name)}" data-group="${group}" aria-label="${esc(visible)}: ${esc(label(chosen))}">${esc(label(chosen))}</button></div>`;
+    }
+    function modelPanel(){
+      const fields=game.puzzle.slots;
+      return `<div class="label">${esc(game.ac.given)}</div><p>${esc(game.ac.when)} → ${esc(game.ac.then)}</p>
+        <div class="model-line"><span class="node empty">${esc(game.states.from.title)}</span><span class="arrow">→</span><span class="node">${esc(game.transition.action)}(input)</span><span class="arrow">→</span><span class="node">${esc(game.states.to.title)}</span></div>
+        <div class="smallhead">Connect the new state fields to their sources:</div>
+        ${fields.map(item=>slot(item.field,`${item.field} ←`,'source')).join('')}
+        <div class="smallhead">What will the measurement return after the transition?</div>
+        ${slot('__delta','row count','delta')}
+        <p class="subtle">Click a card and a slot, or drag the card. Click a filled slot with no selected card to clear it.</p>
+        <div class="actions"><button type="button" class="run" data-action="run" ${state.passed>=game.ac.required_trials?'disabled':''}>▶ Run ${state.passed+1}/${game.ac.required_trials}</button><button type="button" class="ghost" data-action="reset">Reset ↻</button></div>`;
+    }
+    function worldPanel(){
+      const trial=game.trials[Math.min(state.passed,game.trials.length-1)];
+      const preview=`<div class="fact"><strong>NEXT INPUT</strong><pre>${esc(JSON.stringify(trial.input,null,2))}</pre></div>`;
+      const timeline=state.observation ? state.observation.snapshots.map(s=>`<div class="snap"><strong>SNAPSHOT ${s.seq} · ${esc(s.label)} · rows: ${rows(s).length}</strong><pre>${esc(JSON.stringify(rows(s),null,2))}</pre></div>`).join('') : `<div class="snap"><strong>WORLD SNAPSHOTS</strong><pre>Press Run to reveal the ordered world snapshots.</pre></div>`;
+      const f=state.feedback;
+      const feedback=f?`<div class="feedback ${f.ok?'ok':'no'}" role="status" aria-live="polite"><strong>${esc(f.title)}</strong><p>${esc(f.text)}</p>${f.details.length?`<ul>${f.details.map(detail=>`<li>${esc(detail)}</li>`).join('')}</ul>`:''}</div>`:`<div class="feedback" role="status"><strong>Rule not yet verified</strong><p>Build a prediction and run a recorded scenario.</p></div>`;
+      const final=state.passed>=game.ac.required_trials?`<div class="next"><b>${esc(game.ac.id)}: 100%</b><br>Transition rule assembled and checked against ${state.passed} distinct inputs. This completes this AC.</div>`:'';
+      return `${preview}${timeline}${feedback}${final}`;
+    }
+    function render(){
+      byId('subtitle').textContent=game.spec.title;
+      byId('scope-pill').textContent=`${game.world.projection.table} · ${game.world.projection.where.field} = ${game.world.projection.where.equals}`;
+      byId('progress-title').textContent=`${game.ac.id} · ${state.passed}/${game.ac.required_trials} trials`;
+      byId('progress-fill').style.width=`${Math.min(100,100*state.passed/game.ac.required_trials)}%`;
+      byId('progress-caption').textContent=state.passed>=game.ac.required_trials?'AC verified: 100%':'Progress comes from matching the model to the world';
+      byId('sources').innerHTML=sourcePanel();byId('model').innerHTML=modelPanel();byId('world').innerHTML=worldPanel();
+      const t=game.test_link,c=game.code_link;
+      byId('provenance').innerHTML=`Links: <a href="${esc(encodeURI(c.path))}" target="_blank" rel="noopener">${esc(c.path)}#${esc(c.symbol)}</a> → ${esc(game.transition.id)} → ${esc(game.ac.id)} ← <a href="${esc(encodeURI(t.path))}" target="_blank" rel="noopener">${esc(t.path)}#${esc(t.symbol)}</a>. Test: ${esc(t.environment)}. Snapshots are authored in JSONL; this HTML replays them without a database connection.`;
+    }
+    function assign(name,id){
+      const group=name==='__delta'?'delta':'source';
+      if(group==='delta'?!id.startsWith('delta:'):!game.puzzle.cards.some(card=>card.id===id))return;
+      if(state.placed[name]!==id)state.passed=0;
+      state.placed[name]=id;state.selected=null;state.feedback=null;state.observation=null;render();
+    }
+    function predictedValue(source,trial,actualRow){
+      if(source.startsWith('input.'))return path(trial,source);
+      if(source.startsWith('context.'))return path(trial,source);
+      if(source.startsWith('generated.'))return actualRow?.[source.slice(10)];
+      if(source==='literal.null')return null;
+      return undefined;
+    }
+    function run(){
+      if(state.passed>=game.ac.required_trials)return;
+      const names=[...game.puzzle.slots.map(item=>item.field),'__delta'];
+      const missing=names.filter(name=>!state.placed[name]);
+      if(missing.length){state.feedback={ok:false,title:'Some slots are empty',text:`Slots remaining: ${missing.length}.`,wrong:missing,details:[]};render();return;}
+      const trial=game.trials[state.passed];state.observation=trial;
+      const actual=rows(trial.snapshots.at(-1));const before=rows(trial.snapshots[0]);
+      const newRow=actual.find(row=>!before.some(old=>JSON.stringify(old)===JSON.stringify(row)));
+      const delta=actual.length-before.length;
+      const wrong=[];const details=[];
+      for(const field of game.puzzle.slots){
+        const chosen=state.placed[field.field];if(chosen===field.answer)continue;
+        wrong.push(field.field);
+        details.push(`${field.field}: ${label(chosen)} predicted ${JSON.stringify(predictedValue(chosen,trial,newRow))}; the snapshot shows ${JSON.stringify(newRow?.[field.field])}.`);
+      }
+      if(state.placed.__delta!==`delta:${delta}`){wrong.push('__delta');details.push(`count: the blueprint expects ${label(state.placed.__delta)}, snapshots show Δ rows = ${delta}.`);}
+      if(wrong.length)state.feedback={ok:false,title:'The blueprint disagrees with the world',text:'Fix the red slots and retry this trial.',wrong,details};
+      else{state.passed++;state.feedback={ok:true,title:state.passed>=game.ac.required_trials?'AC verified':'First trial passed',text:state.passed>=game.ac.required_trials?'The rule matches both new world snapshots.':'Next comes a different input. Will the same connections hold?',wrong:[],details:[]};}
+      render();
+    }
+    document.addEventListener('click',event=>{
+      const selected=event.target.closest('[data-card]');
+      if(selected){state.selected=state.selected===selected.dataset.card?null:selected.dataset.card;render();return;}
+      const socket=event.target.closest('[data-slot]');
+      if(socket){const name=socket.dataset.slot;if(state.selected)assign(name,state.selected);else if(state.placed[name]){delete state.placed[name];state.passed=0;state.feedback=null;state.observation=null;render();}return;}
+      const action=event.target.closest('[data-action]')?.dataset.action;
+      if(action==='run')run();
+      if(action==='reset'){state=fresh();render();}
+    });
+    document.addEventListener('dragstart',event=>{const c=event.target.closest('[data-card]');if(c)event.dataTransfer.setData('text/plain',c.dataset.card);});
+    document.addEventListener('dragover',event=>{const slot=event.target.closest('[data-slot]');if(slot){event.preventDefault();slot.classList.add('over');}});
+    document.addEventListener('dragleave',event=>{event.target.closest('[data-slot]')?.classList.remove('over');});
+    document.addEventListener('drop',event=>{const slot=event.target.closest('[data-slot]');if(slot){event.preventDefault();assign(slot.dataset.slot,event.dataTransfer.getData('text/plain'));}});
+    byId('load-file').addEventListener('change',async event=>{
+      const file=event.target.files?.[0];if(!file)return;
+      try{const next=JSON.parse(await file.text());if(next.format!=='coherence-workshop/v1')throw Error('Expected coherence-workshop/v1');game=next;state=fresh();render();}
+      catch(error){alert(`Could not load level: ${error.message}`);}
+    });
+    render();
+  })();
+  </script>
+</body>
+</html>

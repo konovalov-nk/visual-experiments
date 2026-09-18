@@ -1,0 +1,247 @@
+{
+  "format": "coherence-workshop/v1",
+  "spec": {
+    "id": "spec.url.create",
+    "title": "URL creation",
+    "description": "Create a short link. This level observes only rows in public.urls matching the current short code."
+  },
+  "world": {
+    "id": "world.urls",
+    "adapter": "postgres-snapshot",
+    "projection": {
+      "id": "projection.current-short",
+      "table": "public.urls",
+      "path": "db.urls",
+      "columns": [
+        "id",
+        "short",
+        "original"
+      ],
+      "where": {
+        "field": "short",
+        "equals": "input.short"
+      }
+    }
+  },
+  "states": {
+    "from": {
+      "id": "state.none",
+      "title": "∅"
+    },
+    "to": {
+      "id": "state.url",
+      "title": "URL",
+      "fields": {
+        "id": "string",
+        "short": "string",
+        "original": "string"
+      }
+    }
+  },
+  "transition": {
+    "id": "transition.create",
+    "action": "create",
+    "input": {
+      "short": "string",
+      "original": "string"
+    }
+  },
+  "measurement": {
+    "id": "measurement.url-count",
+    "path": "db.urls",
+    "expected_delta": 1
+  },
+  "ac": {
+    "id": "ac.create",
+    "title": "Create a URL",
+    "given": "No URL exists for the selected short code",
+    "when": "create(short, original)",
+    "then": "One URL row appears with id, short and original",
+    "required_trials": 2
+  },
+  "test_link": {
+    "id": "test.create",
+    "path": "url_create.test.mjs",
+    "symbol": "create URL persists row and returns id",
+    "relation": "verifies",
+    "environment": "in-memory PostgreSQL-query adapter (demo)"
+  },
+  "code_link": {
+    "id": "code.create",
+    "path": "url_create.mjs",
+    "symbol": "createUrl",
+    "relation": "implements"
+  },
+  "puzzle": {
+    "cards": [
+      {
+        "id": "generated.id",
+        "label": "generated.id()",
+        "type": "string"
+      },
+      {
+        "id": "input.short",
+        "label": "input.short",
+        "type": "string"
+      },
+      {
+        "id": "input.original",
+        "label": "input.original",
+        "type": "string"
+      },
+      {
+        "id": "context.email",
+        "label": "context.email",
+        "type": "string"
+      },
+      {
+        "id": "literal.null",
+        "label": "null",
+        "type": "null"
+      }
+    ],
+    "slots": [
+      {
+        "field": "id",
+        "type": "string",
+        "answer": "generated.id"
+      },
+      {
+        "field": "short",
+        "type": "string",
+        "answer": "input.short"
+      },
+      {
+        "field": "original",
+        "type": "string",
+        "answer": "input.original"
+      }
+    ],
+    "delta_options": [
+      0,
+      1,
+      2
+    ]
+  },
+  "examples": [
+    {
+      "kind": "case",
+      "id": "case.moss",
+      "ac_id": "ac.create",
+      "role": "example",
+      "input": {
+        "short": "moss",
+        "original": "https://garden.test"
+      },
+      "context": {
+        "email": "nik@example.test"
+      },
+      "snapshots": [
+        {
+          "seq": 0,
+          "label": "before create",
+          "world": {
+            "db": {
+              "urls": []
+            }
+          }
+        },
+        {
+          "seq": 1,
+          "label": "after create",
+          "world": {
+            "db": {
+              "urls": [
+                {
+                  "id": "url_01",
+                  "short": "moss",
+                  "original": "https://garden.test"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "trials": [
+    {
+      "kind": "case",
+      "id": "case.cedar",
+      "ac_id": "ac.create",
+      "role": "trial",
+      "input": {
+        "short": "cedar",
+        "original": "https://forest.test"
+      },
+      "context": {
+        "email": "nik@example.test"
+      },
+      "snapshots": [
+        {
+          "seq": 0,
+          "label": "before create",
+          "world": {
+            "db": {
+              "urls": []
+            }
+          }
+        },
+        {
+          "seq": 1,
+          "label": "after create",
+          "world": {
+            "db": {
+              "urls": [
+                {
+                  "id": "url_11",
+                  "short": "cedar",
+                  "original": "https://forest.test"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "kind": "case",
+      "id": "case.birch",
+      "ac_id": "ac.create",
+      "role": "trial",
+      "input": {
+        "short": "birch",
+        "original": "https://trees.test/a"
+      },
+      "context": {
+        "email": "nik@example.test"
+      },
+      "snapshots": [
+        {
+          "seq": 0,
+          "label": "before create",
+          "world": {
+            "db": {
+              "urls": []
+            }
+          }
+        },
+        {
+          "seq": 1,
+          "label": "after create",
+          "world": {
+            "db": {
+              "urls": [
+                {
+                  "id": "url_12",
+                  "short": "birch",
+                  "original": "https://trees.test/a"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
