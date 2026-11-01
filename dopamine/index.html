@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дофаминовый баланс — симулятор мотивации</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #334155;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    header { text-align: center; margin-bottom: 10px; }
+
+    h1 { margin: 0; font-size: 1.8rem; color: var(--text-main); }
+    p.subtitle { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.95rem; }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat-label { color: var(--text-muted); font-size: 0.9rem; }
+
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-top: 5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-note {
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      margin-top: 2px;
+    }
+
+    .stat-val.state-val {
+      font-size: 1.4rem;
+      line-height: 2;
+      white-space: nowrap;
+    }
+
+    .meter {
+      height: 5px;
+      margin-top: 8px;
+      background: #0f172a;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .meter > i {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: var(--success);
+      transition: width 0.35s ease, background-color 0.35s ease;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .main-content { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button { font: inherit; cursor: pointer; }
+
+    .action-btn {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: opacity 0.2s, transform 0.1s;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      width: 100%;
+    }
+
+    .action-btn:active { transform: scale(0.98); }
+    .action-btn:hover { opacity: 0.9; }
+
+    .btn-fast { background-color: var(--danger); }
+    .btn-slow { background-color: var(--success); }
+    .btn-rest { background-color: var(--primary); }
+
+    .btn-desc {
+      font-size: 0.75rem;
+      font-weight: normal;
+      opacity: 0.85;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .hint {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .dot-current { background: var(--primary); }
+    .dot-base { background: var(--text-muted); }
+
+    .chart-controls { display: flex; gap: 8px; }
+
+    .ghost-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 7px;
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .ghost-btn:hover { border-color: var(--primary); color: var(--text-main); }
+
+    .chart-wrap { height: 280px; position: relative; }
+
+    #dopamineChart { width: 100%; height: 100%; display: block; }
+
+    .logs {
+      max-height: 180px;
+      overflow-y: auto;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 5px;
+    }
+
+    .log-item {
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: #0f172a;
+      border-left: 4px solid #fff;
+      line-height: 1.4;
+    }
+
+    .footer-note {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-align: center;
+      margin: 0 0 10px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Дофаминовый баланс</h1>
+    <p class="subtitle">Поймите механику пиков, ям и базового уровня мотивации</p>
+  </header>
+
+  <div class="dashboard">
+    <div class="stat-card">
+      <div class="stat-label">Текущий дофамин</div>
+      <div id="curDopamine" class="stat-val">50%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Базовый уровень</div>
+      <div id="baseDopamine" class="stat-val">50%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Состояние мозга</div>
+      <div id="brainState" class="stat-val state-val" style="color: var(--success)">Фокус / Баланс</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Выгорание</div>
+      <div id="burnoutVal" class="stat-val">0%</div>
+      <div class="meter"><i id="burnoutBar"></i></div>
+      <div class="stat-note">Истощает восстановление</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-head">
+      <div class="legend">
+        <span class="legend-item"><i class="dot dot-current"></i>Текущий дофамин</span>
+        <span class="legend-item"><i class="dot dot-base"></i>Базовая линия</span>
+      </div>
+      <div class="chart-controls">
+        <button id="pauseBtn" class="ghost-btn" type="button">⏸ Пауза</button>
+        <button id="resetBtn" class="ghost-btn" type="button">↺ Сброс</button>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="dopamineChart" role="img" aria-label="График уровня дофамина и базовой линии"></canvas>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="panel">
+      <p class="panel-title">Выбрать действие</p>
+      <div class="btn-group">
+        <button class="action-btn btn-fast" type="button" data-action="fast">
+          <span>⚡ Дешёвый дофамин (рилсы / игры / фастфуд)</span>
+          <span class="btn-desc">+40% сразу, затем яма</span>
+        </button>
+        <button class="action-btn btn-slow" type="button" data-action="slow">
+          <span>🌱 Длинный дофамин (сложная работа / спорт)</span>
+          <span class="btn-desc">−15%, потом +25%</span>
+        </button>
+        <button class="action-btn btn-rest" type="button" data-action="rest">
+          <span>💤 Качественный отдых (сон / прогулка без телефона)</span>
+          <span class="btn-desc">Возврат к базе, −выгорание</span>
+        </button>
+      </div>
+      <p class="hint">Совет: нажмите «Дешёвый дофамин» дважды подряд. База просядет, яма станет глубже, а каждый следующий пик — слабее. Выгорание закрывает «кредит» удовольствия: чем оно выше, тем ниже потолок базы.</p>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title">Лог нейробиологических изменений</p>
+      <div id="logContainer" class="logs" aria-live="polite">
+        <div class="log-item" style="border-color: var(--primary)">Симулятор запущен. Ваш мозг отдохнул и готов к работе.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">Упрощённая модель: дофамин здесь — метафора мотивационного тонуса, а не точная нейрохимия. Значения условны и нужны для наглядности.</p>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const HISTORY_LEN = 60;
+  const TICK_MS = 1500;
+  const HOMEOSTASIS = 50;
+  const START = 50;
+
+  const state = {
+    current: START,
+    baseline: START,
+    burnout: 0,
+    tick: 0,
+    running: true,
+    fastStreak: 0,
+    lastFastTick: -99,
+    history: new Array(HISTORY_LEN).fill(START),
+    baseHistory: new Array(HISTORY_LEN).fill(START),
+    queue: [],
+  };
+
+  const els = {
+    current: document.getElementById('curDopamine'),
+    baseline: document.getElementById('baseDopamine'),
+    brain: document.getElementById('brainState'),
+    burnout: document.getElementById('burnoutVal'),
+    burnoutBar: document.getElementById('burnoutBar'),
+    log: document.getElementById('logContainer'),
+    chart: document.getElementById('dopamineChart'),
+    pause: document.getElementById('pauseBtn'),
+    reset: document.getElementById('resetBtn'),
+  };
+
+  const clamp = (v, min = 0, max = 100) => Math.min(max, Math.max(min, v));
+
+  // ---------- Лог ----------
+  const LOG_LIMIT = 40;
+
+  function addLog(text, type) {
+    const item = document.createElement('div');
+    item.className = 'log-item';
+
+    let color = 'var(--primary)';
+    if (type === 'fast') color = 'var(--danger)';
+    if (type === 'slow') color = 'var(--success)';
+    if (type === 'crash') color = 'var(--warning)';
+    if (type === 'rest') color = 'var(--primary)';
+
+    item.style.borderColor = color;
+    item.textContent = `[тик ${state.tick}] ${text}`;
+    els.log.insertBefore(item, els.log.firstChild);
+
+    while (els.log.children.length > LOG_LIMIT) {
+      els.log.removeChild(els.log.lastChild);
+    }
+  }
+
+  // ---------- UI ----------
+  function burnoutColor(value) {
+    if (value >= 65) return 'var(--danger)';
+    if (value >= 35) return 'var(--warning)';
+    return 'var(--success)';
+  }
+
+  function updateUI() {
+    els.current.textContent = Math.round(state.current) + '%';
+    els.baseline.textContent = Math.round(state.baseline) + '%';
+
+    els.burnout.textContent = Math.round(state.burnout) + '%';
+    const burnoutTone = burnoutColor(state.burnout);
+    els.burnout.style.color = burnoutTone;
+    els.burnoutBar.style.width = state.burnout + '%';
+    els.burnoutBar.style.backgroundColor = burnoutTone;
+
+    if (state.burnout >= 65) {
+      els.brain.textContent = 'Выгорание';
+      els.brain.style.color = 'var(--danger)';
+    } else if (state.current < state.baseline - 10) {
+      els.brain.textContent = 'Апатия / Яма';
+      els.brain.style.color = 'var(--danger)';
+    } else if (state.current > state.baseline + 15) {
+      els.brain.textContent = 'Гиперстимуляция';
+      els.brain.style.color = 'var(--warning)';
+    } else {
+      els.brain.textContent = 'Фокус / Баланс';
+      els.brain.style.color = 'var(--success)';
+    }
+  }
+
+  // ---------- График (без внешних библиотек) ----------
+  const ctx = els.chart.getContext('2d');
+  const PAD = { top: 16, right: 14, bottom: 18, left: 42 };
+  let chartW = 0;
+  let chartH = 0;
+
+  function fitCanvas() {
+    const rect = els.chart.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    chartW = rect.width;
+    chartH = rect.height;
+    els.chart.width = Math.round(chartW * dpr);
+    els.chart.height = Math.round(chartH * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawChart();
+  }
+
+  const plotX = (i) =>
+    PAD.left + (i / (HISTORY_LEN - 1)) * (chartW - PAD.left - PAD.right);
+
+  const plotY = (v) =>
+    PAD.top + (1 - v / 100) * (chartH - PAD.top - PAD.bottom);
+
+  function traceSeries(series) {
+    ctx.beginPath();
+    ctx.moveTo(plotX(0), plotY(series[0]));
+
+    for (let i = 1; i < series.length - 1; i++) {
+      const midX = (plotX(i) + plotX(i + 1)) / 2;
+      const midY = (plotY(series[i]) + plotY(series[i + 1])) / 2;
+      ctx.quadraticCurveTo(plotX(i), plotY(series[i]), midX, midY);
+    }
+
+    const last = series.length - 1;
+    ctx.lineTo(plotX(last), plotY(series[last]));
+  }
+
+  function drawChart() {
+    if (!chartW || !chartH) return;
+
+    ctx.clearRect(0, 0, chartW, chartH);
+
+    // Сетка и подписи
+    ctx.font = '11px -apple-system, Segoe UI, Roboto, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+
+    for (let v = 0; v <= 100; v += 25) {
+      const y = plotY(v);
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.13)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(PAD.left, y);
+      ctx.lineTo(chartW - PAD.right, y);
+      ctx.stroke();
+
+      ctx.fillStyle = '#64748b';
+      ctx.fillText(String(v), PAD.left - 8, y);
+    }
+
+    const last = HISTORY_LEN - 1;
+
+    // Заливка под текущим уровнем
+    traceSeries(state.history);
+    ctx.lineTo(plotX(last), plotY(0));
+    ctx.lineTo(plotX(0), plotY(0));
+    ctx.closePath();
+
+    const fill = ctx.createLinearGradient(0, PAD.top, 0, chartH - PAD.bottom);
+    fill.addColorStop(0, 'rgba(59, 130, 246, 0.30)');
+    fill.addColorStop(1, 'rgba(59, 130, 246, 0.02)');
+    ctx.fillStyle = fill;
+    ctx.fill();
+
+    // Линия текущего уровня
+    traceSeries(state.history);
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    // Базовая линия
+    traceSeries(state.baseHistory);
+    ctx.setLineDash([6, 6]);
+    ctx.strokeStyle = 'rgba(148, 163, 184, 0.9)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Точка на конце текущей линии
+    const px = plotX(last);
+    const py = plotY(state.current);
+
+    ctx.beginPath();
+    ctx.arc(px, py, 7, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.22)';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(px, py, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#f8fafc';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#3b82f6';
+    ctx.stroke();
+  }
+
+  // ---------- Симуляция ----------
+  function pushSample() {
+    state.history.shift();
+    state.history.push(state.current);
+    state.baseHistory.shift();
+    state.baseHistory.push(state.baseline);
+  }
+
+  function schedule(delay, fn) {
+    state.queue.push({ at: state.tick + delay, fn });
+  }
+
+  function runDueEffects() {
+    const due = state.queue.filter((e) => e.at <= state.tick);
+    if (!due.length) return;
+    state.queue = state.queue.filter((e) => e.at > state.tick);
+    due.forEach((e) => e.fn());
+  }
+
+  function tick() {
+    if (!state.running) return;
+
+    state.tick++;
+
+    // Выгорание медленно снижается само, если не добивать себя
+    state.burnout = clamp(state.burnout - 0.35);
+
+    // Гомеостаз: чем выше выгорание, тем ниже точка равновесия базы
+    const equilibrium = HOMEOSTASIS - state.burnout * 0.12;
+    state.baseline += (equilibrium - state.baseline) * 0.012;
+
+    // Текущий уровень релаксирует к базе
+    state.current += (state.baseline - state.current) * 0.15;
+
+    runDueEffects();
+
+    state.current = clamp(state.current);
+    state.baseline = clamp(state.baseline, 10, 90);
+
+    pushSample();
+    updateUI();
+    drawChart();
+  }
+
+  function triggerActivity(type) {
+    if (type === 'fast') {
+      const inStreak = state.tick - state.lastFastTick <= 8;
+      state.fastStreak = inStreak ? Math.min(state.fastStreak + 1, 4) : 0;
+      state.lastFastTick = state.tick;
+
+      // Привыкание: выгорание снижает отдачу от вспышки
+      const tolerance = 1 - state.burnout / 250;
+      const gain = Math.max(12, (40 - state.fastStreak * 8) * tolerance);
+
+      state.current = clamp(state.current + gain);
+      state.baseline = Math.max(18, state.baseline - 4 - state.burnout / 50);
+      state.burnout = clamp(state.burnout + 9 + state.fastStreak * 3);
+
+      if (state.fastStreak > 0) {
+        addLog(
+          `Вспышка всего +${Math.round(gain)}%: рецепторы привыкли, база просела. Дешёвый дофамин обесценивается.`,
+          'fast'
+        );
+      } else {
+        addLog(
+          `Вспышка +${Math.round(gain)}%. Мозг перевозбуждён, база просела — впереди откат.`,
+          'fast'
+        );
+      }
+
+      schedule(2, () => {
+        state.current = Math.max(0, Math.min(state.current, state.baseline - 20 - state.fastStreak * 2));
+        state.burnout = clamp(state.burnout + 4);
+        const gap = Math.round(state.baseline - state.current);
+        addLog(
+          `Дофаминовая яма! Уровень на ${gap}% ниже базы. Эффект прошёл, а работать теперь тяжелее.`,
+          'crash'
+        );
+      });
+    } else if (type === 'slow') {
+      state.current = clamp(state.current - 15);
+      state.baseline = Math.min(90, state.baseline + 3);
+      state.burnout = clamp(state.burnout + 2);
+      addLog(
+        'Преодоление: −15%. Сначала трудно и скучно — вы тренируете рецепторы, а не тратите их.',
+        'slow'
+      );
+
+      // Отложенный триумф: ровный подъём вместо вспышки
+      schedule(2, () => {
+        state.current = clamp(state.current + 25);
+        addLog(
+          'Отложенная награда: +25%. Стабильный подъём и рост базы — мотивация стала устойчивее.',
+          'slow'
+        );
+      });
+    } else if (type === 'rest') {
+      const before = state.current;
+      state.current = clamp(state.current + (state.baseline - state.current) * 0.5);
+      state.baseline = Math.min(70, state.baseline + 1);
+      state.burnout = clamp(state.burnout - 18);
+
+      addLog(
+        `Отдых: ${Math.round(before)}% → ${Math.round(state.current)}%. Рецепторы восстанавливают чувствительность, выгорание спадает.`,
+        'rest'
+      );
+    }
+
+    pushSample();
+    updateUI();
+    drawChart();
+  }
+
+  function resetSimulation() {
+    state.current = START;
+    state.baseline = START;
+    state.burnout = 0;
+    state.tick = 0;
+    state.fastStreak = 0;
+    state.lastFastTick = -99;
+    state.queue = [];
+    state.history = new Array(HISTORY_LEN).fill(START);
+    state.baseHistory = new Array(HISTORY_LEN).fill(START);
+
+    els.log.innerHTML = '';
+    addLog('Симулятор перезапущен. Уровень дофамина в равновесии.', 'rest');
+
+    updateUI();
+    drawChart();
+  }
+
+  function togglePause() {
+    state.running = !state.running;
+    els.pause.textContent = state.running ? '⏸ Пауза' : '▶ Продолжить';
+  }
+
+  document.querySelectorAll('[data-action]').forEach((btn) => {
+    btn.addEventListener('click', () => triggerActivity(btn.dataset.action));
+  });
+
+  els.pause.addEventListener('click', togglePause);
+  els.reset.addEventListener('click', resetSimulation);
+
+  window.addEventListener('resize', fitCanvas);
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(fitCanvas).observe(els.chart.parentElement);
+  }
+
+  updateUI();
+  fitCanvas();
+  setInterval(tick, TICK_MS);
+})();
+</script>
+</body>
+</html>
